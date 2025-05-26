@@ -1,25 +1,111 @@
 package com.ca.election.notification.model;
 
-
-import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
+import java.time.Instant;
 
-import java.time.LocalDate;
-
-// Annotations
-@Data
-@Document(collection = "Event")
+@Document(collection = "event")  // This is your actual MongoDB collection name
 public class Event {
 
-
     @Id
-    private int eventId;
+    private String eventId;  // Mapped to EventID (e.g., EVT123456)
+
     private String sedol;
     private String stockName;
-    private String caType;
-    private String  caDeadline;
-    private LocalDate Date1;
-    private LocalDate Date2;
 
+    private CorporateAction corporateAction;
+
+    private Instant createdAt;
+    private Instant updatedAt;
+
+    // ---------------- Inner Class ----------------
+    public static class CorporateAction {
+        private String caType;
+        private Instant caDeadline;
+        private Instant date1; // Announcement Date
+        private Instant date2; // Payment Date
+
+        public String getCaType() {
+            return caType;
+        }
+
+        public void setCaType(String caType) {
+            this.caType = caType;
+        }
+
+        public Instant getCaDeadline() {
+            return caDeadline;
+        }
+
+        public void setCaDeadline(Instant caDeadline) {
+            this.caDeadline = caDeadline;
+        }
+
+        public Instant getDate1() {
+            return date1;
+        }
+
+        public void setDate1(Instant date1) {
+            this.date1 = date1;
+        }
+
+        public Instant getDate2() {
+            return date2;
+        }
+
+        public void setDate2(Instant date2) {
+            this.date2 = date2;
+        }
+    }
+
+    // ---------------- Getters & Setters ----------------
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
+    }
+
+    public String getSedol() {
+        return sedol;
+    }
+
+    public void setSedol(String sedol) {
+        this.sedol = sedol;
+    }
+
+    public String getStockName() {
+        return stockName;
+    }
+
+    public void setStockName(String stockName) {
+        this.stockName = stockName;
+    }
+
+    public CorporateAction getCorporateAction() {
+        return corporateAction;
+    }
+
+    public void setCorporateAction(CorporateAction corporateAction) {
+        this.corporateAction = corporateAction;
+    }
+
+    public Instant getCreatedAt() {
+        return createdAt;
+    }
+
+    public void setCreatedAt(Instant createdAt) {
+        this.createdAt = createdAt;
+    }
+
+    public Instant getUpdatedAt() {
+        return updatedAt;
+    }
+
+    public void setUpdatedAt(Instant updatedAt) {
+        this.updatedAt = updatedAt;
+    }
 }
+

@@ -1,9 +1,8 @@
 
-
 # application.yml
 spring:
   application:
     name: notification
   data:
     mongodb:
-      uri: mongodb+srv://vjobdubey:KXN6dvukjsVa63je@cluster0.6il4bb7.mongodb.net
+      uri: mongodb+srv://vjobdubey:KXN6dvukjsVa63je@cluster0.6il4bb7.mongodb.net/sample_mflix?ssl=true&authSource=admin

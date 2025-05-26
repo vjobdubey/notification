@@ -15,10 +15,4 @@ public class TestController {
 
     }
 
-    @GetMapping("/event")
-    public Mono<Event> getEvent(){
-        return Mono.empty();
-
-    }
-
 }
