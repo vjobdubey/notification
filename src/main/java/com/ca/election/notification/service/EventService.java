@@ -1,4 +1,4 @@
-package com.ca.election.notification.com.example.service;
+package com.ca.election.notification.service;
 
 
 import com.ca.election.notification.model.Event;
