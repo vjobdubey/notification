@@ -2,19 +2,18 @@ package com.ca.election.notification.service;
 
 
 import com.ca.election.notification.model.Event;
-import com.ca.election.notification.repository.EventRepo;
+import com.ca.election.notification.repository.EventDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
-import java.util.Optional;
 
 @Service
 public class EventService {
 
     @Autowired
-    private EventRepo repository;
+    private EventDao repository;
 
     public Mono<Event> saveSampleEvent() {
         Event event = new Event();

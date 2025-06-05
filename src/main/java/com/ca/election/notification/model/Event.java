@@ -1,11 +1,13 @@
 package com.ca.election.notification.model;
 
 import com.ca.election.notification.util.EmailStatus;
+import lombok.Data;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
 
-@Document(collection = "event")  // This is your actual MongoDB collection name
+@Document(collection = "event")
+@Data
 public class Event {
 
     @Id
@@ -60,54 +62,7 @@ public class Event {
         }
     }
 
-    // ---------------- Getters & Setters ----------------
 
-    public String getEventId() {
-        return eventId;
-    }
 
-    public void setEventId(String eventId) {
-        this.eventId = eventId;
-    }
-
-    public String getSedol() {
-        return sedol;
-    }
-
-    public void setSedol(String sedol) {
-        this.sedol = sedol;
-    }
-
-    public String getStockName() {
-        return stockName;
-    }
-
-    public void setStockName(String stockName) {
-        this.stockName = stockName;
-    }
-
-    public CorporateAction getCorporateAction() {
-        return corporateAction;
-    }
-
-    public void setCorporateAction(CorporateAction corporateAction) {
-        this.corporateAction = corporateAction;
-    }
-
-    public Instant getCreatedAt() {
-        return createdAt;
-    }
-
-    public void setCreatedAt(Instant createdAt) {
-        this.createdAt = createdAt;
-    }
-
-    public Instant getUpdatedAt() {
-        return updatedAt;
-    }
-
-    public void setUpdatedAt(Instant updatedAt) {
-        this.updatedAt = updatedAt;
-    }
 }
 

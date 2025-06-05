@@ -2,10 +2,7 @@ package com.ca.election.notification.exception;
 
 public class CAException extends  Exception{
 
-    public CAException() {
-    }
-
-    public CAException(String message) {
+   public CAException(String message) {
         super(message);
     }
 
