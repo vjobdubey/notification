@@ -1,5 +1,6 @@
 
 # application.yml
+env: dev/test
 spring:
   application:
     name: notification

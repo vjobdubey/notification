@@ -1,17 +1,17 @@
 package com.ca.election.notification.controller;
 
-import com.ca.election.notification.model.Event;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RestController;
 import reactor.core.publisher.Mono;
 
 @RestController
-public class TestController {
-
-    @GetMapping("/test")
-    public Mono<String> test(){
-
-        return Mono.just("test");
+public class HealthCheck {
+    @Value("${env}")
+    String env;
+    @GetMapping("/health-check")
+    public Mono<String> healthCheck(){
+        return Mono.just(env+":ok");
 
     }
 

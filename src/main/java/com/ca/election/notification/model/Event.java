@@ -1,5 +1,6 @@
 package com.ca.election.notification.model;
 
+import com.ca.election.notification.util.EmailStatus;
 import org.springframework.data.annotation.Id;
 import org.springframework.data.mongodb.core.mapping.Document;
 import java.time.Instant;
@@ -17,6 +18,7 @@ public class Event {
 
     private Instant createdAt;
     private Instant updatedAt;
+    private EmailStatus emailStatus;
 
     // ---------------- Inner Class ----------------
     public static class CorporateAction {
