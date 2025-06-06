@@ -17,9 +17,7 @@ public class NotificationController {
 
     @GetMapping("notification/process")
     public Mono<String> process() {
-            System.out.println("notification");
-         notificationService.process();
-        return Mono.just("notification processed..");
+         return notificationService.process();
     }
 
 
