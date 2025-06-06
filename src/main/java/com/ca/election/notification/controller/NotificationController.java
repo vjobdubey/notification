@@ -16,10 +16,10 @@ public class NotificationController {
     NotificationService notificationService;
 
     @GetMapping("notification/process")
-    public Flux<Event> process() {
-        System.out.println("notification");
-         return notificationService.process();
-        //return Mono.just("notification processed..");
+    public Mono<String> process() {
+            System.out.println("notification");
+         notificationService.process();
+        return Mono.just("notification processed..");
     }
 
 
