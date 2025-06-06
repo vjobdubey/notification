@@ -21,16 +21,16 @@ public class NotificationDao {
     @Autowired
     private ReactiveMongoTemplate mongoTemplate;
 
-    public Flux<Event> findAndMarkOnePendingEmail() {
-        Query query = new Query(Criteria.where("emailStatus").is(EmailStatus.INITIATED))
+    public boolean findAndMarkOnePendingEmail() {
+        Query query = new Query(Criteria.where("emailStatus").is(EmailStatus.PENDING))
                 //.with(Sort.by(Sort.Direction.ASC, "createdAt"))
                 .limit(1);
 
         Update update = new Update()
-                .set("emailStatus", EmailStatus.COMPLETED)
+                .set("emailStatus", EmailStatus.INITIATED)
                 .set("updatedAt", new Date());
 
-        mongoTemplate.findAndModify(query, update, Event.class)
+       return mongoTemplate.findAndModify(query, update, Event.class)
                 .doOnError(e -> {
                     System.err.println("MongoTemplate do error: " + e.getClass().getName() + " - " + e.getMessage());
                     e.printStackTrace();
@@ -39,10 +39,18 @@ public class NotificationDao {
                     System.err.println("MongoTemplate resume error: " + e.getClass().getName() + " - " + e.getMessage());
                     e.printStackTrace();
                     return Mono.empty();
-                })
-                .subscribe(); // 🔴 Required to trigger the pipeline
+                })  .subscribe(event -> {
+                   if (event != null) {
+                       System.out.println("Found and updated a PENDING event. Proceeding with execution.");
 
-        return Flux.just(new Event());
+                       // ✅ Your main logic goes here
+                       findAndMarkOnePendingEmail();
+
+                   } else {
+                       System.out.println("No PENDING event found. Skipping execution.");
+                   }
+               }).isDisposed();
+
 
     }
 
