@@ -14,12 +14,7 @@ public class NotificationService {
     private NotificationDao notificationDao;
 
     public Flux<Event> process() {
-
-        boolean  isProcess;
-        do {
-            isProcess = notificationDao.findAndMarkOnePendingEmail();
-        } while (isProcess);
-
+        notificationDao.findAndMarkOnePendingEmail();
         return Flux.just(new Event());
     }
 

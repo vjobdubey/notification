@@ -21,7 +21,7 @@ public class NotificationDao {
     @Autowired
     private ReactiveMongoTemplate mongoTemplate;
 
-    public boolean findAndMarkOnePendingEmail() {
+    public void findAndMarkOnePendingEmail() {
         Query query = new Query(Criteria.where("emailStatus").is(EmailStatus.PENDING))
                 //.with(Sort.by(Sort.Direction.ASC, "createdAt"))
                 .limit(1);
@@ -30,28 +30,26 @@ public class NotificationDao {
                 .set("emailStatus", EmailStatus.INITIATED)
                 .set("updatedAt", new Date());
 
-       return mongoTemplate.findAndModify(query, update, Event.class)
+        mongoTemplate.findAndModify(query, update, Event.class)
                 .doOnError(e -> {
-                    System.err.println("MongoTemplate do error: " + e.getClass().getName() + " - " + e.getMessage());
+                    System.err.println("MongoTemplate error: " + e.getClass().getName() + " - " + e.getMessage());
                     e.printStackTrace();
                 })
                 .onErrorResume(e -> {
-                    System.err.println("MongoTemplate resume error: " + e.getClass().getName() + " - " + e.getMessage());
-                    e.printStackTrace();
+                    System.err.println("Handling MongoTemplate error gracefully.");
                     return Mono.empty();
-                })  .subscribe(event -> {
-                   if (event != null) {
-                       System.out.println("Found and updated a PENDING event. Proceeding with execution.");
-
-                       // ✅ Your main logic goes here
-                       findAndMarkOnePendingEmail();
-
-                   } else {
-                       System.out.println("No PENDING event found. Skipping execution.");
-                   }
-               }).isDisposed();
-
-
+                })
+                .flatMap(event -> {
+                    if (event != null) {
+                        System.out.println("Found and updated one PENDING email.");
+                        // Recursive call in flatMap is safe in reactive
+                        findAndMarkOnePendingEmail();
+                    } else {
+                        System.out.println("No PENDING email found.");
+                    }
+                    return Mono.empty();
+                })
+                .subscribe();
     }
 
 
