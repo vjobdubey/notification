@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
+import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
 
 @Service
@@ -16,8 +17,9 @@ public class NotificationService {
     private NotificationDao notificationDao;
 
     public Mono<String> process() {
-        AtomicInteger counter = new AtomicInteger(0);
-        notificationDao.findAndMarkOnePendingEmail(counter);
+        AtomicInteger  processedCount = new AtomicInteger(0);
+        AtomicBoolean stop = new AtomicBoolean(false);
+        notificationDao.processAllPendingEmails(processedCount, stop).subscribe();
         return Mono.just(" Notification processed..");
     }
 
