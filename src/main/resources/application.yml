@@ -1,4 +1,3 @@
-
 # application.yml Apple@123
 env: dev/test
 spring:
@@ -7,3 +6,9 @@ spring:
   data:
     mongodb:
       uri: mongodb+srv://vjobdubey:KXN6dvukjsVa63je@cluster0.6il4bb7.mongodb.net/cadb?ssl=true&authSource=admin
+
+jwt:
+  private:
+    key: "your-256-bit-secret-key-here-make-it-long-and-secure"
+  access-token:
+    expiration: 60
