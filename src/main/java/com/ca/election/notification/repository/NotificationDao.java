@@ -31,16 +31,9 @@ public class NotificationDao {
 
     public Flux<Void> processAllPendingEmails(AtomicInteger  processedCount, AtomicBoolean stop) {
         return Flux.defer(() -> {
-            if (stop.get()) {
-                return Mono.empty(); // No more events, terminate
-            }
 
             return mongoTemplate.findAndModify(getPendingEvent(), updateToInitiated(), Event.class)
                     .flatMap(event -> {
-                        if (event == null) {
-                            stop.set(true);
-                            return Mono.empty(); // no record, trigger termination
-                        }
                         processedCount.incrementAndGet(); // Track each processed event
                         log.info("Processing Event: {}", event.getEventId());
 
@@ -61,9 +54,9 @@ public class NotificationDao {
                     .onErrorResume(e -> {
                         log.error("MongoTemplate error: {}", e.getMessage(), e);
                         return Mono.delay(Duration.ofSeconds(2)).then(Mono.empty());
-                    });
+                    }).repeat(10);
 
-        }).repeat().filter(ignored -> !stop.get()); // ✅ Filter out repeat if stop is true
+        });
     }
 
     private static Query getPendingEvent() {

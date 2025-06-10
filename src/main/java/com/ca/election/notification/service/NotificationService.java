@@ -9,6 +9,7 @@ import reactor.core.publisher.Mono;
 
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.function.Predicate;
 
 @Service
 public class NotificationService {
@@ -19,6 +20,7 @@ public class NotificationService {
     public Mono<String> process() {
         AtomicInteger  processedCount = new AtomicInteger(0);
         AtomicBoolean stop = new AtomicBoolean(false);
+
         notificationDao.processAllPendingEmails(processedCount, stop).subscribe();
         return Mono.just(" Notification processed..");
     }
