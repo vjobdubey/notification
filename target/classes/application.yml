@@ -1,9 +1,0 @@
-
-# application.yml Apple@123
-env: dev/test
-spring:
-  application:
-    name: notification
-  data:
-    mongodb:
-      uri: mongodb+srv://vjobdubey:KXN6dvukjsVa63je@cluster0.6il4bb7.mongodb.net/cadb?ssl=true&authSource=admin
