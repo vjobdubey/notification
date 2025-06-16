@@ -1,8 +1,12 @@
 package com.ca.election.notification.controller;
 
+import com.ca.election.notification.exception.CAException;
 import com.ca.election.notification.service.EventService;
 import com.ca.election.notification.model.Event;
 import jakarta.validation.Valid;
+import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
+import org.springframework.web.bind.annotation.RestController;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
