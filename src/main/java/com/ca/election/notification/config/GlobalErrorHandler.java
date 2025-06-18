@@ -51,6 +51,12 @@ public class GlobalErrorHandler implements ErrorWebExceptionHandler {
             );
             body.put("errors", errors);
 
+        } else if (ex instanceof IllegalArgumentException || ex instanceof com.fasterxml.jackson.databind.exc.InvalidFormatException) {
+            status = HttpStatus.BAD_REQUEST;
+            body.put("title", "Invalid Request");
+            body.put("status", status.value());
+            body.put("detail", "Invalid value provided for an enum field. Please use one of: EMAIL, TEAMS, CALENDAR.");
+
         } else if (ex instanceof CAException caEx) {
             status = HttpStatus.UNPROCESSABLE_ENTITY;
             body.put("title", "Corporate Action Error");
