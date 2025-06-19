@@ -1,0 +1,11 @@
+# IntelliJ files
+.idea/
+*.iml
+
+# Build output
+target/
+
+# Logs and OS clutter
+*.log
+.DS_Store
+Thumbs.db

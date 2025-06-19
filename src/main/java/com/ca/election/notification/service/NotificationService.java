@@ -19,11 +19,8 @@ public class NotificationService {
     public Mono<String> process() {
         AtomicInteger  processedCount = new AtomicInteger(0);
         AtomicBoolean stop = new AtomicBoolean(false);
-        notificationDao.processAllPendingEmails(processedCount, stop).subscribe();
-        return Mono.just(" Notification processed..");
+        return notificationDao.processAllPendingEmails(processedCount, stop)
+                .then(Mono.just(" Notification processed.."));
     }
-
-
-
 
 }

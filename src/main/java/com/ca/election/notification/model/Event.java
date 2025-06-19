@@ -1,5 +1,4 @@
 package com.ca.election.notification.model;
-
 import com.ca.election.notification.util.EmailStatus;
 import lombok.Data;
 import jakarta.validation.Valid;
@@ -31,7 +30,9 @@ public class Event {
     private EmailStatus emailStatus;
 
     // ---------------- Inner Class ----------------
+    @Data
     public static class CorporateAction {
+        public CorporateAction() {}
         @NotBlank(message = "Corporate action type must not be blank")
         private String caType;
         @Future(message = "CA deadline must be in the future")
@@ -73,8 +74,5 @@ public class Event {
             this.date2 = date2;
         }
     }
-
-
-
 }
 
