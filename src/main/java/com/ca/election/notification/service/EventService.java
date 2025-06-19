@@ -3,8 +3,10 @@ package com.ca.election.notification.service;
 
 import com.ca.election.notification.model.Event;
 import com.ca.election.notification.repository.EventDao;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
 
 import java.time.Instant;
@@ -41,6 +43,28 @@ public class EventService {
 
     public Mono<Event> getEventById(String id) {
         return repository.findById(id);
+    }
+
+    public Flux<Event> getEventList() {
+        return repository.findAll();
+    }
+
+    //to be deleted later
+    public Mono<Event> create(Event event) {
+        return repository.save(event);
+    }
+
+    public Mono<Event> update(String id, Event event) {
+        return repository.findById(id)
+                .flatMap(existing -> {
+                    existing.setEmailStatus(event.getEmailStatus());
+                    existing.setUpdatedAt(Instant.now());
+                    return repository.save(existing);
+                });
+    }
+
+    public Mono<Void> delete(String id) {
+        return repository.deleteById(id);
     }
 }
 
