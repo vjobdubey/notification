@@ -20,3 +20,8 @@ server:
 logging:
   level:
     com.ca.election.notification: INFO
+
+notification:
+  scheduler:
+    cron: "0 0 2,10,18 * * *"
+    zone: "Asia/Kolkata"
