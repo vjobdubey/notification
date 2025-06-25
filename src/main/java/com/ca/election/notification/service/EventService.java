@@ -1,7 +1,7 @@
 package com.ca.election.notification.service;
 
 
-import com.ca.election.notification.model.Event;
+import com.ca.election.notification.model.*;
 import com.ca.election.notification.repository.EventDao;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,32 +21,22 @@ public class EventService {
 
     public Mono<Event> saveSampleEvent() {
         Event event = new Event();
-        event.setEventId("EVT100");
+        event.setEventId("EVT10001");
         event.setCreatedAt(Instant.parse("2025-05-26T12:00:00Z"));
         event.setUpdatedAt(Instant.parse("2025-06-19T07:34:42.150Z"));
         event.setClaimedAt(Instant.parse("2025-06-19T07:34:41.980Z"));
         event.setEmailStatus("COMPLETED");
 
-        // ----------- Positions -----------
-        Event.Position position = new Event.Position();
-
-        Event.Risk risk = new Event.Risk();
-        risk.setId("RSK001");
-        risk.setType("Equity");
-        risk.setDate(Instant.parse("2025-06-15T00:00:00Z"));
-        risk.setSourceSystem("Quantum");
-        risk.setSourceSystemId("SRC001");
-
-        Event.Instrument instrument = new Event.Instrument();
+        // --- Instrument ---
+        Instrument instrument = new Instrument();
         instrument.setSedol("B1Y2QL5");
-        instrument.setRic("XYZ.N");
-        instrument.setIsin("US1234567890");
-        instrument.setName("XYZ Corp");
-        instrument.setType("Common Stock");
-        risk.setInstrument(instrument);
-        position.setRisk(risk);
+        instrument.setRic("RIC123");
+        instrument.setIsin("ISIN456");
+        instrument.setName("ABC Corp");
+        instrument.setType("Equity");
 
-        Event.Holder holder = new Event.Holder();
+        // --- Holder ---
+        Holder holder = new Holder();
         holder.setId("HLD10001");
         holder.setLegalEntity("Alpha Investments");
         holder.setGroup("Global Finance Group");
@@ -57,110 +47,117 @@ public class EventService {
         holder.setSite("Main HQ");
         holder.setClientCode("CL001");
         holder.setClientType("Institutional");
-        holder.setBackToBack(true);
+        holder.setIsBackToBack(true);
+
+        // --- Risk ---
+        Risk risk = new Risk();
+        risk.setId("EVT10001");
+        risk.setType("Dividend");
+        risk.setDate(Instant.parse("2025-06-27T00:00:00Z"));
+        risk.setSourceSystem("Quantum");
+        risk.setSourceSystemId("SRC001");
+        risk.setInstrument(instrument);
+
+        Position position = new Position();
+        position.setRisk(risk);
         position.setHolder(holder);
-
+        position.setHolder(holder);
         position.setSettled(true);
+        position.setSbl(new SBL(false));
+        position.setSblThirdParty(new SBLThirdParty("TPBank", "Inactive"));
+        position.setNonstandard(new NonStandard(false));
+        position.setSynthetic(new Synthetic(true));
 
-        Event.SBL sbl = new Event.SBL();
-        sbl.setActive(false);
-        position.setSbl(sbl);
 
-        Event.SBLThirdParty sblThirdParty = new Event.SBLThirdParty();
-        sblThirdParty.setProvider("TPBank");
-        sblThirdParty.setStatus("Inactive");
-        position.setSblThirdParty(sblThirdParty);
-
-        Event.NonStandard nonstandard = new Event.NonStandard();
-        nonstandard.setOverride(false);
-        position.setNonstandard(nonstandard);
-
-        Event.Synthetic synthetic = new Event.Synthetic();
-        synthetic.setFlag(true);
-        position.setSynthetic(synthetic);
-
-        event.setPositions(List.of(position));
-
-        // ----------- Transactions -----------
-        Event.Trade calypso = new Event.Trade();
-        calypso.setTradeId("CAL001");
-        calypso.setBookingId("BK001");
+        // --- Transaction ---
+        Calypso calypso = new Calypso();
+        calypso.setTradeId("CAL490");
+        calypso.setBookingId("BK1");
         calypso.setAmount(100000.0);
         calypso.setCurrency("USD");
 
-        Event.Trade quantum = new Event.Trade();
-        quantum.setTradeId("QNT001");
-        quantum.setBookingId("BK002");
-        quantum.setAmount(100000.0);
+        Quantum quantum = new Quantum();
+        quantum.setTradeId("QTX990");
+        quantum.setAmount(50000.0);
+        quantum.setBookingId("BK2");
         quantum.setCurrency("USD");
 
-        Event.Transactions transactions = new Event.Transactions();
-        transactions.setCalypso(calypso);
-        transactions.setQuantum(quantum);
-        event.setTransactions(transactions);
+        Transaction transaction = new Transaction();
+        transaction.setCalypso(calypso);
+        transaction.setQuantum(quantum);
 
-        // ----------- Election Management -----------
-        Event.ElectionItem item = new Event.ElectionItem();
-        item.setType("Cash");
-        item.setQuantity(100);
+        event.setTransaction(transaction);
 
-        Event.GiveElection giveElection = new Event.GiveElection();
-        giveElection.setItems(List.of(item));
-        giveElection.setTotalQuantity(100);
-        giveElection.setElectionQuantity(90);
+        // ---- CITILO Option ----
+        GiveElection giveCitilo = new GiveElection();
+        giveCitilo.setTotalQuantity(100);
+        giveCitilo.setElectionQuantity(90);
+        giveCitilo.setItems(List.of(
+                new GiveElection.ElectionItem("Cash", 100)
+        ));
 
-        Event.ReceiveElection receiveElection1 = new Event.ReceiveElection();
-        receiveElection1.setDetails("Shares to receive");
+        ReceiveElection receiveCitilo = new ReceiveElection();
+        receiveCitilo.setDetails("Shares to receive");
 
-        Event.Arbitrage arbitrage1 = new Event.Arbitrage();
-        arbitrage1.setStrategy("Market Neutral");
+        Arbitrage arbitrageCitilo = new Arbitrage();
+        arbitrageCitilo.setStrategy("Market Neutral");
 
-        Event.Balance balance1 = new Event.Balance();
-        balance1.setAmount(10);
+        Balance balanceCitilo = new Balance();
+        balanceCitilo.setAmount(10);
 
-        Event.ElectionOption citilo = new Event.ElectionOption();
-        citilo.setGiveElection(giveElection);
-        citilo.setRecieveElection(receiveElection1);
-        citilo.setArbitrage(arbitrage1);
-        citilo.setBalance(balance1);
+        ElectionOption citiloOption = new ElectionOption();
+        citiloOption.setGiveElection(giveCitilo);
+        citiloOption.setReceiveElection(receiveCitilo);
+        citiloOption.setArbitrage(arbitrageCitilo);
+        citiloOption.setBalance(balanceCitilo);
 
-        Event.ReceiveElection receiveElection2 = new Event.ReceiveElection();
-        receiveElection2.setDetails("Synthetic payout");
+    // ---- SYNTH Option ----
+        GiveElection giveSynth = new GiveElection();
+        giveSynth.setTotalQuantity(80);
+        giveSynth.setElectionQuantity(75);
+        giveSynth.setItems(List.of(
+                new GiveElection.ElectionItem("Synthetic", 80)
+        ));
 
-        Event.Arbitrage arbitrage2 = new Event.Arbitrage();
-        arbitrage2.setStrategy("Pair Trade");
+        ReceiveElection receiveSynth = new ReceiveElection();
+        receiveSynth.setDetails("Synthetic payout");
 
-        Event.Balance balance2 = new Event.Balance();
-        balance2.setAmount(5);
+        Arbitrage arbitrageSynth = new Arbitrage();
+        arbitrageSynth.setStrategy("Pair Trade");
 
-        Event.ElectionOption synth = new Event.ElectionOption();
-        synth.setGiveElection(giveElection);
-        synth.setRecieveElection(receiveElection2);
-        synth.setArbitrage(arbitrage2);
-        synth.setBalance(balance2);
-        synth.setStrategy("Synthetic Yield");
+        Balance balanceSynth = new Balance();
+        balanceSynth.setAmount(5);
 
-        Event.Election election = new Event.Election();
-        election.setCITILO(citilo);
-        election.setSYNTH(synth);
+        ElectionOption synthOption = new ElectionOption();
+        synthOption.setGiveElection(giveSynth);
+        synthOption.setReceiveElection(receiveSynth);
+        synthOption.setArbitrage(arbitrageSynth);
+        synthOption.setBalance(balanceSynth);
 
-        Event.Configuration config = new Event.Configuration();
+    // ---- Final Election Map ----
+        Election election = new Election();
+        election.setCITILO(Map.of("option1", citiloOption));
+        election.setSYNTH(Map.of("option2", synthOption));
+
+
+        // --- Election Management ---
+        ElectionManagement electionManagement = new ElectionManagement();
+        electionManagement.setOptionChangeDetails("Updated option Y");
+        electionManagement.setElectionOptionStatus("PENDING");
+        electionManagement.setElectionUpdatedBy("admin");
+        electionManagement.setPrices(Map.of("USD", 100.5, "EUR", 95.2));
+
+        Configuration config = new Configuration();
         config.setDeadline(Instant.parse("2025-06-25T23:59:59Z"));
+        electionManagement.setConfiguration(config);
 
-        Event.Options options = new Event.Options();
-        options.setAvailableOptions(List.of("Cash", "Stock", "Synthetic"));
+        Options opts = new Options();
+        opts.setAvailableOptions(List.of("Cash", "Stock", "Synthetic"));
+        electionManagement.setOptions(opts);
 
-        Event.ElectionManagement em = new Event.ElectionManagement();
-        em.setOptionChangeDetails("UpdatedOptionX");
-        em.setElectionOptionStatus("Pending");
-        em.setElectionUpdatedBy("systemUser");
-        em.setElection(election);
-        em.setPrices(Map.of("USD", 100.5, "EUR", 95.2));
-        em.setConfiguration(config);
-        em.setOptions(options);
-        em.setCustodyDeadline(Instant.parse("2025-06-20T12:00:00Z"));
+        electionManagement.setCustodyDeadline(Instant.parse("2025-06-25T23:59:59Z"));
 
-        event.setElectionManagement(em);
+        event.setElectionManagement(electionManagement);
 
         return repository.save(event);
     }
