@@ -13,7 +13,7 @@ public class ElectionOption {
 
     @Valid
     @NotNull(message = "ReceiveElection must not be null")
-    private ReceiveElection receiveElection;
+    private ReceiveElection recieveElection;
 
     @Valid
     @NotNull(message = "Arbitrage must not be null")

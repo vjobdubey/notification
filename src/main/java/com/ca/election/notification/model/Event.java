@@ -9,7 +9,6 @@ import org.springframework.data.mongodb.core.mapping.Field;
 
 import java.time.Instant;
 import java.util.List;
-import java.util.Map;
 
 @Document(collection = "caEvent")
 @Data
@@ -37,7 +36,7 @@ public class Event {
 
     @Valid
     @NotNull(message = "Transaction is required")
-    private Transaction transaction;
+    private Transaction transactions;
 
     @Valid
     @NotNull(message = "Election management is required")

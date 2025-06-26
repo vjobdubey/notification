@@ -15,7 +15,7 @@ public class GiveElection {
     private Integer totalQuantity;
 
     @NotNull(message = "Election quantity is required")
-    private Integer electionQuantity;
+    private Integer ElectionQuantity;
 
     @NotEmpty(message = "Items must not be empty")
     @Valid

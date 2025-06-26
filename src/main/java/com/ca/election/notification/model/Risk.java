@@ -10,7 +10,7 @@ import java.time.Instant;
 public class Risk {
 
     @NotBlank(message = "Risk ID is required")
-    private String id;
+    private String rid;
 
     @NotBlank(message = "Type is required")
     private String type;

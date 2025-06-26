@@ -7,7 +7,7 @@ import lombok.Data;
 public class Holder {
 
     @NotBlank(message = "Holder ID is required")
-    private String id;
+    private String hid;
 
     @NotBlank(message = "Legal entity is required")
     private String legalEntity;

@@ -6,6 +6,6 @@ import java.util.Map;
 
 @Data
 public class Election {
-    private Map<String, ElectionOption> CITILO;
-    private Map<String, ElectionOption> SYNTH;
+    private ElectionOption CITILO;
+    private ElectionOption SYNTH;
 }

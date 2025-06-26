@@ -37,7 +37,7 @@ public class EventService {
 
         // --- Holder ---
         Holder holder = new Holder();
-        holder.setId("HLD10001");
+        holder.setHid("HLD10001");
         holder.setLegalEntity("Alpha Investments");
         holder.setGroup("Global Finance Group");
         holder.setActivity("Investment Banking");
@@ -51,7 +51,7 @@ public class EventService {
 
         // --- Risk ---
         Risk risk = new Risk();
-        risk.setId("EVT10001");
+        risk.setRid("EVT10001");
         risk.setType("Dividend");
         risk.setDate(Instant.parse("2025-06-27T00:00:00Z"));
         risk.setSourceSystem("Quantum");
@@ -86,7 +86,7 @@ public class EventService {
         transaction.setCalypso(calypso);
         transaction.setQuantum(quantum);
 
-        event.setTransaction(transaction);
+        event.setTransactions(transaction);
 
         // ---- CITILO Option ----
         GiveElection giveCitilo = new GiveElection();
@@ -107,7 +107,7 @@ public class EventService {
 
         ElectionOption citiloOption = new ElectionOption();
         citiloOption.setGiveElection(giveCitilo);
-        citiloOption.setReceiveElection(receiveCitilo);
+        citiloOption.setRecieveElection(receiveCitilo);
         citiloOption.setArbitrage(arbitrageCitilo);
         citiloOption.setBalance(balanceCitilo);
 
@@ -130,14 +130,16 @@ public class EventService {
 
         ElectionOption synthOption = new ElectionOption();
         synthOption.setGiveElection(giveSynth);
-        synthOption.setReceiveElection(receiveSynth);
+        synthOption.setRecieveElection(receiveSynth);
         synthOption.setArbitrage(arbitrageSynth);
         synthOption.setBalance(balanceSynth);
 
     // ---- Final Election Map ----
         Election election = new Election();
-        election.setCITILO(Map.of("option1", citiloOption));
-        election.setSYNTH(Map.of("option2", synthOption));
+        election.setCITILO(citiloOption);
+        election.setSYNTH(synthOption);
+//        election.setCITILO(Map.of("option1", citiloOption));
+//        election.setSYNTH(Map.of("option2", synthOption));
 
 
         // --- Election Management ---

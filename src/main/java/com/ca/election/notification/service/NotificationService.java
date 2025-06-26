@@ -17,8 +17,8 @@ public class NotificationService {
 
     public Mono<String> process() {
         return notificationDao.processAllPendingEmails()
-                .repeat()
-                .takeUntil(result -> !result)
+                .repeat()  // repeat after delay
+                .takeUntil(result -> !result)// stop repeating when result is false
                 .then(Mono.just("Notification processed...{}"));
     }
 
