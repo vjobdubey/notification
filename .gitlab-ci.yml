@@ -24,7 +24,9 @@ docker-build:
   variables:
     DOCKER_DRIVER: overlay2
   script:
-    - docker login -u vjobdubey -p pass@123456789
+    - docker login -u "$DOCKER_USERNAME" -p "$DOCKER_PASSWORD"
+    - docker build -t $DOCKER_IMAGE_NAME:latest .
+    - docker push $DOCKER_IMAGE_NAME:latest
   only:
     - main
   needs:
@@ -34,7 +36,7 @@ docker-build:
 deploy-to-render:
   stage: deploy
   script:
-    - curl -X POST "https://api.render.com/deploy/srv-d1h6296mcj7s73dgjocg?key=KLPtGxKNa04"
+    - curl -X POST "$RENDER_DEPLOY_HOOK_URL"
   only:
     - main
   needs:
