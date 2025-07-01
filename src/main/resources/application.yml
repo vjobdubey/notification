@@ -2,8 +2,26 @@
 # application.yml Apple@123
 env: dev/test
 spring:
+  webflux:
+    base-path: /
+  main:
+    web-application-type: reactive
   application:
     name: notification
   data:
     mongodb:
       uri: mongodb+srv://vjobdubey:KXN6dvukjsVa63je@cluster0.6il4bb7.mongodb.net/cadb?ssl=true&authSource=admin
+
+server:
+  error:
+    include-message: always
+    include-binding-errors: always
+
+logging:
+  level:
+    com.ca.election.notification: INFO
+
+notification:
+  scheduler:
+    cron: "0 0 2,10,18 * * *"
+    zone: "Asia/Kolkata"
