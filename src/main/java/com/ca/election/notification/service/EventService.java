@@ -138,9 +138,6 @@ public class EventService {
         Election election = new Election();
         election.setCITILO(citiloOption);
         election.setSYNTH(synthOption);
-//        election.setCITILO(Map.of("option1", citiloOption));
-//        election.setSYNTH(Map.of("option2", synthOption));
-
 
         // --- Election Management ---
         ElectionManagement electionManagement = new ElectionManagement();
@@ -177,7 +174,6 @@ public class EventService {
         return repository.findAll();
     }
 
-    //to be deleted later
     public Mono<Event> create(Event event) {
         return repository.save(event);
     }
